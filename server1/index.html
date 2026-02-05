@@ -12,32 +12,6 @@
     <button id="queryBtn">Submit SELECT Query</button>
     <div id="queryRes"></div>
 
-    <script>
-        class App {
-            constructor(endpoint) { this.endpoint = endpoint; }
-            
-            async post() {
-                const r = await fetch(this.endpoint, { method: 'POST' });
-                return await r.json();
-            }
-
-            async get(sql) {
-                const r = await fetch(`${this.endpoint}/${encodeURIComponent(sql)}`);
-                return await r.json();
-            }
-        }
-
-        const app = new App("http://localhost:3000/lab5/api/v1/sql");
-
-        document.getElementById('insBtn').onclick = async () => {
-            const data = await app.post();
-            document.getElementById('insRes').innerText = JSON.stringify(data);
-        };
-
-        document.getElementById('queryBtn').onclick = async () => {
-            const data = await app.get(document.getElementById('sqlBox').value);
-            document.getElementById('queryRes').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-        };
-    </script>
+    <script src="../server1/client.js" defer></script>
 </body>
 </html>
