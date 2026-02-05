@@ -1,1 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lab 5 Client</title>
+</head>
+<body>
+    <h1>Patient Database</h1>
+    <button id="insBtn">Insert Rows</button>
+    <div id="insRes"></div>
+    <hr>
+    <textarea id="sqlBox" rows="4" cols="50">SELECT * FROM patient</textarea><br>
+    <button id="queryBtn">Submit SELECT Query</button>
+    <div id="queryRes"></div>
 
+    <script>
+        class App {
+            constructor(endpoint) { this.endpoint = endpoint; }
+            
+            async post() {
+                const r = await fetch(this.endpoint, { method: 'POST' });
+                return await r.json();
+            }
+
+            async get(sql) {
+                const r = await fetch(`${this.endpoint}/${encodeURIComponent(sql)}`);
+                return await r.json();
+            }
+        }
+
+        const app = new App("http://localhost:3000/lab5/api/v1/sql");
+
+        document.getElementById('insBtn').onclick = async () => {
+            const data = await app.post();
+            document.getElementById('insRes').innerText = JSON.stringify(data);
+        };
+
+        document.getElementById('queryBtn').onclick = async () => {
+            const data = await app.get(document.getElementById('sqlBox').value);
+            document.getElementById('queryRes').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        };
+    </script>
+</body>
+</html>
